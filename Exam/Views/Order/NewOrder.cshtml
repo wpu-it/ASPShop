@@ -1,0 +1,30 @@
+﻿@model NewOrderViewModel
+
+<div class="order-containers">
+    <div class="order-left-container" style="margin-top: 15px;" >
+        <form method="post" asp-controller="Order" asp-action="ConfirmOrder">
+            <input type="hidden" name="overallPrice" value="@Model.OverallPrice"/>
+            <div class="flex-normal" style="margin-bottom: 20px;">
+                <div>Мобільний телефон: </div>
+                <input type="tel" name="phoneNumber" />
+            </div>
+            <div class="flex-normal" style="margin-bottom: 20px;">
+                <div>Відділення Нової пошти: </div>
+                <input type="number" name="postNumber" style="max-height: 50px;"/>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Підтвердити замовлення"/>
+        </form>
+    </div>
+    <div class="order-right-container" style="margin-top: 15px;" >
+        <h3>Ваше замовлення:</h3>
+        @foreach (var prod in Model.Products)
+        {
+            <div class="flex-normal">
+                <div>@prod.Name</div>
+                <div>@prod.Price грн</div>
+                <div>@prod.Quantity шт.</div>
+            </div>
+        }
+        <div>Загальна ціна - @Model.OverallPrice грн</div>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+﻿@model List<ProductBasketViewModel>
+<div class="modal fade" id="cart" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Кошик</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @if (Model.Count > 0)
+                {
+                    foreach (var prod in Model)
+                    {
+                        <div class="card product-card basket-product-card" data-id="@prod.Id" style="width: 18rem;">
+                            <div class="card-body">
+                                <img class="basket-image" src="@prod.Image" data-id="@prod.Id" alt="Alternate Text" />
+                                <a href="Products/Product/@prod.Id"><h5 class="card-title" data-id="@prod.Id">@prod.Name</h5></a>
+                                <div class="card-text price-basket" data-id="@prod.Id" data-price="@prod.Price">@prod.Price грн</div>
+                                <div class="card-text">@prod.Quantity елемент</div>
+                                <form asp-controller="Products" asp-action="ChangeQuantity" class="change-quantity-form" method="post">
+                                    <input type="hidden" name="id" value="@prod.Id" />
+                                    <label>Змінити кількість</label>
+                                    <input type="number" data-id="@prod.Id" min="1" class="prod-cart-quantity" name="quantity" value="@prod.Quantity" />
+                                </form>
+                                <button data-id="@prod.Id" class="btn btn-primary btn-remove-from-basket">Видалити з кошика</button>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <h3>Порожньо</h3>
+                }
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-make-order" data-prods="@Model">Оформити замовлення</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+            </div>
+        </div>
+    </div>
+</div>

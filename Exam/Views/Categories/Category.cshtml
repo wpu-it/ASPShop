@@ -1,0 +1,16 @@
+﻿@model CategoryViewModel
+
+@{
+    ViewData["Title"] = Model.Category.Name;
+}
+
+<h4>@Model.Category.Name</h4>
+<div class="line"></div>
+@foreach (var subCategory in Model.Category.SubCategories)
+{
+    <div class="card sub-category" style="width: 18rem;">
+        <div class="card-body">
+            <a href="~/Categories/SubCategory/@subCategory.Id?page=1"><h5 class="card-title">@subCategory.Name</h5></a>
+        </div>
+    </div>
+}

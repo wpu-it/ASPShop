@@ -1,0 +1,23 @@
+﻿@model SortProductsViewModel
+
+<div class="products">
+    @if (Model.Products.Count > 0)
+    {
+        for (int i = 0; i < Model.Products.Count; i++)
+        {
+            var prod = Model.Products[i];
+            <div class="card product" style="width: 24rem;" data-counter="@i">
+                <a href="~/Products/Product/@prod.Id"><img class="card-img-top prod-img" src="@prod.ProductPhotos[0].Path" alt="card image cap"></a>
+                <div class="card-body" data-id="@prod.Id">
+                    <a href="~/Products/Product/@prod.Id"><h5 class="card-title">@prod.Name</h5></a>
+                    <p class="card-text">@prod.Price грн</p>
+                    <a href="/Home/AddToCart?id=@prod.Id" class="btn btn-primary">До кошику</a>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <h4>Пошук не дав результату...</h4>
+    }
+</div>

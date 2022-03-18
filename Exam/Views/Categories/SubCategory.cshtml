@@ -1,0 +1,86 @@
+﻿@model SubCategoryViewModel
+
+@{ 
+    ViewData["Title"] = Model.SubCategory.Name;
+}
+
+<div class="sub-category-containers">
+    <div class="sub-category-left-container">
+        <div class="producers">
+            Виробники:
+            <div class="producer-inputs">
+                @foreach (var producer in Model.Producers)
+                {
+                    <div><input type="checkbox" class="cb-producers" value="@producer.Name" /> @producer.Name</div>
+                }
+            </div>
+        </div>
+        <div class="price">
+            Ціна:
+            <div>
+                <input class="input-price min-price" value="0" type="text" /> - <input class="input-price max-price" value="1000000" type="text" /> грн
+            </div>
+            <button class="btn btn-primary btn-sort">Показати результати</button>
+        </div>
+        
+    </div>
+    <div class="sub-category-right-container">
+        <h5>@Model.SubCategory.Name</h5>
+        <div class="line"></div>
+        <div class="products">
+            @for (int i = 0; i < Model.Products.Count; i++)
+            {
+                var prod = Model.Products[i];
+                <div class="card product" style="width: 24rem;" data-counter="@i">
+                    <a href="~/Products/Product/@prod.Id"><img class="card-img-top prod-img" src="@prod.ProductPhotos[0].Path" alt="card image cap"></a>
+                    <div class="card-body" data-id="@prod.Id">
+                        <a href="~/Products/Product/@prod.Id"><h5 class="card-title">@prod.Name</h5></a>
+                        <p class="card-text">@prod.Price грн</p>
+                        <a href="/Products/AddToCart?id=@prod.Id" class="btn btn-primary">До кошику</a>
+                    </div>
+                </div>
+            }
+        </div>
+        <nav aria-label="..." style="align-self: center;">
+            <ul class="pagination pagination-sm">
+                @if (Model.Page == 1)
+                {
+                    <li class="page-item active">
+                        <a class="page-link" href="~/Categories/SubCategory/@Model.SubCategory.Id?page=1" tabindex="-1">1</a>
+                    </li>
+                    @if (Model.OverallProductsCount > 4)
+                    {
+                        @for (int i = 1; i < Model.OverallProductsCount / 4 + 1; i++)
+                        {
+                            int t = i + 1;
+                            <li class="page-item"><a class="page-link" href="~/Categories/SubCategory/@Model.SubCategory.Id?page=@t">@t </a></li>
+                        }
+                    }
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="~/Categories/SubCategory/@Model.SubCategory.Id?page=1" tabindex="-1">1</a>
+                    </li>
+                    @if (Model.OverallProductsCount > 4)
+                    {
+                        @for (int i = 1; i < Model.OverallProductsCount / 4 + 1; i++)
+                        {
+                            int t = i + 1;
+                            if (Model.Page == t)
+                            {
+                                <li class="page-item active"><a class="page-link" href="~/Categories/SubCategory/@Model.SubCategory.Id?page=@t">@t </a></li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><a class="page-link" href="~/Categories/SubCategory/@Model.SubCategory.Id?page=@t">@t </a></li>
+                            }
+
+                        }
+                    }
+                }
+
+            </ul>
+        </nav>
+    </div>
+</div>

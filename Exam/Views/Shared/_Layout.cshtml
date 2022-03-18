@@ -1,0 +1,70 @@
+﻿@inject Exam.Services.ICartSessionService cartSessionService
+@inject Exam.Services.IWishListService wishListService
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TOPSHOP</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    @await Html.PartialAsync("_WishList", await wishListService.GetWishList()) 
+    @await Html.PartialAsync("_Cart", cartSessionService.GetCartProducts(Context))
+    <header>
+        <div class="head-menu border-bottom box-shadow">
+            <div>
+                <a class="title" asp-area="" asp-controller="Home" asp-action="Index">TOPSHOP</a>
+            </div>
+            <div class="flex-normal">
+                <input type="text" class="input-find" placeholder="Знайти товар ..." />
+                <button type="button" asp-controller="Products" asp-action="SearchResult" class="btn btn-find"></button>
+            </div>
+            <div class="flex-normal">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <button data-toggle="modal" data-target="#wishlist" type="button" class="btn btn-primary position-relative btn-wish">
+                        <span id="wish-list-products-counter" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            @await wishListService.GetWishListCount()
+                        </span>
+                    </button>
+                }
+                <button data-toggle="modal" data-target="#cart" type="button" class="btn btn-primary position-relative btn-basket">
+                    <span id="basket-products-counter" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        @cartSessionService.GetCartProducts(Context)?.Count
+                    </span>
+                </button>
+            </div>
+            <div class="flex-normal">
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Login">Вхід</a>
+                    <a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Register">Реєстрація</a>
+                }
+                else
+                {
+                    <form method="post" asp-controller="Account" asp-action="Logout">
+                        <input type="submit" class="btn btn-primary btn-logout" value="Вихід"/>
+                    </form>
+                }
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container text-light">
+            &copy; 2021 - TOPSHOP
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

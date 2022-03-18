@@ -1,0 +1,40 @@
+﻿@model HomeIndexViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="main-containers">
+    <div class="left-container">
+        <div class="list-categories">
+            @foreach (var category in Model.Categories)
+            {
+                <div class="flex-normal">
+                    <a href="Categories/Category/@category.Id"><div class="flex-normal li-category" data-catId="@category.Id">
+                        <img src="@category.CategoryPhoto.Path" class="img-cat">
+                        <div class="cat-name">@category.Name</div>
+                    </div></a>
+                    <div class="hidden list-subcategories" data-catId="@category.Id">
+                        @foreach (var subCategory in category.SubCategories)
+                        {
+                            <div class="cat-name li-subcategory" data-subcatid="@subCategory.Id"><a href="Categories/SubCategory/@subCategory.Id?page=1">@subCategory.Name</a></div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="right-container">
+        @foreach (var prod in Model.Products)
+        {
+            <div class="card product" style="width: 18rem;">
+                <a href="Products/Product/@prod.Id"><img class="card-img-top prod-img" src="@prod.ProductPhotos[0].Path" alt="card image cap"></a>
+                <div class="card-body" data-id="@prod.Id">
+                    <a href="Products/Product/@prod.Id"><h5 class="card-title">@prod.Name</h5></a>
+                    <p class="card-text">@prod.Price грн</p>
+                    <a href="/Products/AddToCart?id=@prod.Id" class="btn btn-primary">До кошику</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
